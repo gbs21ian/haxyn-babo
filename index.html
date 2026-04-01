@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>설하현 말투 변환기</title>
+    <title>설하현 말투 번역기</title>
     <style>
         :root {
             --bg-dark: #313338;
@@ -137,14 +137,14 @@
 </head>
 <body>
     <div class="container">
-        <h1>설하현 말투 변환기 ✨</h1>
+        <h1>설하현 말투 번역기 ✨</h1>
         
         <div class="input-group">
             <label for="input">변환할 말 입력</label>
             <textarea id="input" placeholder="여기에 말을 입력해바..."></textarea>
         </div>
 
-        <button id="convertBtn">말투 변환하기</button>
+        <button id="convertBtn">번역하기</button>
 
         <div class="output-group">
             <label>설하현 스타일</label>
@@ -161,10 +161,8 @@
         function convertToHaxynStyle(text) {
             if (!text) return "";
 
-            // Pre-processing: remove spaces occasionally
-            if (text.length < 10 && Math.random() < 0.2) {
-                text = text.replace(/\s/g, "");
-            } else if (Math.random() < 0.1) {
+            // Pre-processing: remove spaces very aggressively
+            if (Math.random() < 0.7) {
                 text = text.replace(/\s/g, "");
             }
 
@@ -172,7 +170,7 @@
             let convertedWords = [];
 
             // 1. Start with specific starters
-            if (Math.random() < 0.2) {
+            if (Math.random() < 0.3) {
                 const starters = ['ㅇㄴ', 'ㅅㅂ', '아니', '근데', '왁'];
                 convertedWords.push(starters[Math.floor(Math.random() * starters.length)]);
             }
@@ -195,33 +193,37 @@
                 word = word.replace(/뭐야/g, '머ㅑㅇ');
                 word = word.replace(/새끼들/g, '새키들');
 
-                // 3. Shorthand
+                // 3. Shorthand & Particle
                 word = word.replace(/있어/g, '잇서');
                 word = word.replace(/있음/g, '잇슴');
                 word = word.replace(/했어/g, '햇서');
                 word = word.replace(/잖아요/g, '잔아여');
+                word = word.replace(/인데/g, '인대');
+                word = word.replace(/근데/g, '근대');
 
                 // 4. Ending variations
-                if (word.endsWith('어')) {
+                if (word.endsWith('데')) {
+                    word = word.slice(0, -1) + '대';
+                } else if (word.endsWith('어')) {
                     const r = Math.random();
-                    if (r < 0.2) word = word.slice(0, -1) + '더';
-                    else if (r < 0.4) word = word.slice(0, -1) + '어어';
-                    else if (r < 0.5) word = word.slice(0, -1) + 'ㅛㅇ어';
-                    else if (r < 0.6) word = word.slice(0, -1) + '햇슨';
+                    if (r < 0.25) word = word.slice(0, -1) + '더';
+                    else if (r < 0.5) word = word.slice(0, -1) + '어어';
+                    else if (r < 0.6) word = word.slice(0, -1) + 'ㅛㅇ어';
+                    else if (r < 0.7) word = word.slice(0, -1) + '햇슨';
                 } else if (word.endsWith('다')) {
                     const r = Math.random();
-                    if (r < 0.3) word = word.slice(0, -1) + '타';
-                    else if (r < 0.6) word = word.slice(0, -1) + '어';
+                    if (r < 0.4) word = word.slice(0, -1) + '타';
+                    else if (r < 0.7) word = word.slice(0, -1) + '어';
                 } else if (word.endsWith('해')) {
                     const r = Math.random();
-                    if (r < 0.3) word = word.slice(0, -1) + '핸더';
-                    else if (r < 0.6) word = word.slice(0, -1) + '해어';
+                    if (r < 0.4) word = word.slice(0, -1) + '핸더';
+                    else if (r < 0.7) word = word.slice(0, -1) + '해어';
                 } else if (word.endsWith('요')) {
-                    if (Math.random() < 0.5) word = word.slice(0, -1) + 'ㅛㅇ';
+                    if (Math.random() < 0.6) word = word.slice(0, -1) + 'ㅛㅇ';
                 }
 
                 // 5. Subtle Typos
-                if (word.length > 2 && Math.random() < 0.08) {
+                if (word.length > 2 && Math.random() < 0.12) {
                     const idx = Math.floor(Math.random() * word.length);
                     const char = word[idx];
                     if (char >= '가' && char <= '힣') {
@@ -235,7 +237,7 @@
                 else if (word === '아니') word = 'ㅇㄴ';
 
                 // 7. Rare trailing marks
-                if (index === words.length - 1 && Math.random() < 0.15) {
+                if (index === words.length - 1 && Math.random() < 0.2) {
                     const marks = ['!', '?', 'ㅋㅋㅋㅋ', 'ㅎㅎㅎ'];
                     word += marks[Math.floor(Math.random() * marks.length)];
                 }
@@ -243,18 +245,18 @@
                 convertedWords.push(word);
             });
 
-            // 8. Join logic
-            let result = Math.random() < 0.1 ? convertedWords.join("") : convertedWords.join(" ");
+            // 8. Join logic (very aggressive no-space)
+            let result = Math.random() < 0.8 ? convertedWords.join("") : convertedWords.join(" ");
 
-            // 9. Emotional Emojis
+            // 9. Emotional Emojis & laughter (Discord style)
             const rEmo = Math.random();
             if (rEmo < 0.05) result += "ㅜ".repeat(Math.floor(Math.random() * 3) + 2);
             else if (rEmo < 0.1) result += "ㅠ".repeat(Math.floor(Math.random() * 3) + 2);
-            else if (rEmo < 0.4) result += " " + "ㅋ".repeat(Math.floor(Math.random() * 8) + 3);
-            else if (rEmo < 0.5) result += " " + "ㅎ".repeat(Math.floor(Math.random() * 4) + 3);
+            else if (rEmo < 0.6) result += " " + "ㅋ".repeat(Math.floor(Math.random() * 10) + 3);
+            else if (rEmo < 0.7) result += " " + "ㅎ".repeat(Math.floor(Math.random() * 5) + 3);
 
             // 10. Side note # prefix
-            if (Math.random() < 0.1) {
+            if (Math.random() < 0.2) {
                 result = "# " + result;
             }
 
