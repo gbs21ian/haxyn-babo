@@ -161,51 +161,44 @@
         function convertToHaxynStyle(text) {
             if (!text) return "";
 
-            // Pre-processing: remove spaces very aggressively
-            if (Math.random() < 0.7) {
-                text = text.replace(/\s/g, "");
-            }
+            // 1. 기초 치환 (문장 전체에 먼저 적용)
+            text = text.replace(/진짜/g, 'ㅈㅉ');
+            text = text.replace(/너무/g, 'ㅈㄴ');
+            text = text.replace(/정말/g, 'ㅈㅉ');
+            text = text.replace(/매우/g, '개');
+            text = text.replace(/엄청/g, '개');
+            text = text.replace(/싫다/g, '실어');
+            text = text.replace(/싫어/g, '실어');
+            text = text.replace(/좋아/g, '조ㅎ아');
+            text = text.replace(/맞아/g, 'ㅇㅈ');
+            text = text.replace(/인정/g, 'ㅇㅈ');
+            text = text.replace(/그러니까/g, 'ㄱㄴㄲ');
+            text = text.replace(/많아/g, '만아');
+            text = text.replace(/뭐지/g, '머지');
+            text = text.replace(/뭐야/g, '머ㅑㅇ');
+            text = text.replace(/새끼들/g, '새키들');
+            text = text.replace(/있어/g, '잇서');
+            text = text.replace(/있음/g, '잇슴');
+            text = text.replace(/했어/g, '햇서');
+            text = text.replace(/잖아요/g, '잔아여');
+            text = text.replace(/인데/g, '인대');
+            text = text.replace(/근데/g, '근대');
+            text = text.replace(/데/g, '대'); // 핵심 요구사항: 모든 '데'를 '대'로
 
             let words = text.split(/\s+/);
             let convertedWords = [];
 
-            // 1. Start with specific starters
-            if (Math.random() < 0.3) {
-                const starters = ['ㅇㄴ', 'ㅅㅂ', '아니', '근데', '왁'];
+            // 2. 문장 시작어 추가
+            if (Math.random() < 0.35) {
+                const starters = ['ㅇㄴ', 'ㅅㅂ', '아니', '근대', '왁'];
                 convertedWords.push(starters[Math.floor(Math.random() * starters.length)]);
             }
 
             words.forEach((word, index) => {
-                // 2. Base replacements & Intensifiers
-                word = word.replace(/진짜/g, 'ㅈㅉ');
-                word = word.replace(/너무/g, 'ㅈㄴ');
-                word = word.replace(/정말/g, 'ㅈㅉ');
-                word = word.replace(/매우/g, '개');
-                word = word.replace(/엄청/g, '개');
-                word = word.replace(/싫다/g, '실어');
-                word = word.replace(/싫어/g, '실어');
-                word = word.replace(/좋아/g, '조ㅎ아');
-                word = word.replace(/맞아/g, 'ㅇㅈ');
-                word = word.replace(/인정/g, 'ㅇㅈ');
-                word = word.replace(/그러니까/g, 'ㄱㄴㄲ');
-                word = word.replace(/많아/g, '만아');
-                word = word.replace(/뭐지/g, '머지');
-                word = word.replace(/뭐야/g, '머ㅑㅇ');
-                word = word.replace(/새끼들/g, '새키들');
-
-                // 3. Shorthand & Particle
-                word = word.replace(/있어/g, '잇서');
-                word = word.replace(/있음/g, '잇슴');
-                word = word.replace(/했어/g, '햇서');
-                word = word.replace(/잖아요/g, '잔아여');
-                word = word.replace(/인데/g, '인대');
-                word = word.replace(/근데/g, '근대');
-                word = word.replace(/데/g, '대');
-
-                // 4. Ending variations
+                // 3. 어미 변형 (끝자리 위주)
                 if (word.endsWith('어')) {
                     const r = Math.random();
-                    if (r < 0.25) word = word.slice(0, -1) + '더';
+                    if (r < 0.3) word = word.slice(0, -1) + '더';
                     else if (r < 0.5) word = word.slice(0, -1) + '어어';
                     else if (r < 0.6) word = word.slice(0, -1) + 'ㅛㅇ어';
                     else if (r < 0.7) word = word.slice(0, -1) + '햇슨';
@@ -221,8 +214,8 @@
                     if (Math.random() < 0.6) word = word.slice(0, -1) + 'ㅛㅇ';
                 }
 
-                // 5. Subtle Typos
-                if (word.length > 2 && Math.random() < 0.12) {
+                // 4. 아주 가끔 오타 추가
+                if (word.length > 2 && Math.random() < 0.1) {
                     const idx = Math.floor(Math.random() * word.length);
                     const char = word[idx];
                     if (char >= '가' && char <= '힣') {
@@ -231,30 +224,24 @@
                     }
                 }
 
-                // 6. Specific word replacements
+                // 5. 특정 단어 교체
                 if (['응', '어', '어어'].includes(word)) word = '운';
                 else if (word === '아니') word = 'ㅇㄴ';
-
-                // 7. Rare trailing marks
-                if (index === words.length - 1 && Math.random() < 0.2) {
-                    const marks = ['!', '?', 'ㅋㅋㅋㅋ', 'ㅎㅎㅎ'];
-                    word += marks[Math.floor(Math.random() * marks.length)];
-                }
 
                 convertedWords.push(word);
             });
 
-            // 8. Join logic (very aggressive no-space)
-            let result = Math.random() < 0.8 ? convertedWords.join("") : convertedWords.join(" ");
+            // 6. 띄어쓰기 거의 안 함 (90% 확률로 붙여씀)
+            let result = Math.random() < 0.9 ? convertedWords.join("") : convertedWords.join(" ");
 
-            // 9. Emotional Emojis & laughter (Discord style)
+            // 7. 웃음소리 및 감정표현 (디스코드 스타일로 길게)
             const rEmo = Math.random();
             if (rEmo < 0.05) result += "ㅜ".repeat(Math.floor(Math.random() * 3) + 2);
             else if (rEmo < 0.1) result += "ㅠ".repeat(Math.floor(Math.random() * 3) + 2);
-            else if (rEmo < 0.6) result += " " + "ㅋ".repeat(Math.floor(Math.random() * 10) + 3);
-            else if (rEmo < 0.7) result += " " + "ㅎ".repeat(Math.floor(Math.random() * 5) + 3);
+            else if (rEmo < 0.7) result += " " + "ㅋ".repeat(Math.floor(Math.random() * 12) + 5);
+            else if (rEmo < 0.8) result += " " + "ㅎ".repeat(Math.floor(Math.random() * 6) + 3);
 
-            // 10. Side note # prefix
+            // 8. 가끔 # 접두사 추가
             if (Math.random() < 0.2) {
                 result = "# " + result;
             }
