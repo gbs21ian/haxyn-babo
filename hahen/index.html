@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>haxyn._.s2 말투 변환기</title>
+    <style>
+        :root {
+            --bg-dark: #313338;
+            --bg-darker: #2b2d31;
+            --bg-light: #383a40;
+            --text-main: #dbdee1;
+            --text-muted: #949ba4;
+            --accent: #5865f2;
+            --accent-hover: #4752c4;
+            --input-bg: #1e1f22;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--bg-darker);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            padding: 32px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 0 0 24px 0;
+            text-align: center;
+            color: #fff;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background-color: var(--input-bg);
+            border: none;
+            border-radius: 4px;
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 16px;
+            resize: none;
+            box-sizing: border-box;
+            outline: none;
+            transition: box-shadow 0.2s;
+        }
+
+        textarea:focus {
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .output-group {
+            margin-top: 24px;
+            padding: 16px;
+            background-color: var(--bg-light);
+            border-radius: 8px;
+            min-height: 60px;
+            position: relative;
+        }
+
+        #output {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #58a6ff;
+            word-break: break-all;
+            white-space: pre-wrap;
+        }
+
+        .footer {
+            margin-top: 32px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: auto;
+            padding: 4px 8px;
+            font-size: 12px;
+            background-color: var(--bg-dark);
+            opacity: 0.7;
+        }
+
+        .copy-btn:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>haxyn._.s2 말투 변환기 ✨</h1>
+        
+        <div class="input-group">
+            <label for="input">변환할 말 입력</label>
+            <textarea id="input" placeholder="여기에 말을 입력해바..."></textarea>
+        </div>
+
+        <button id="convertBtn">말투 변환하기</button>
+
+        <div class="output-group">
+            <label>haxyn._.s2 스타일</label>
+            <button class="copy-btn" id="copyBtn">복사</button>
+            <p id="output"></p>
+        </div>
+
+        <div class="footer">
+            Discord 스타일 웹 앱 | haxyn._.s2 학습 데이터 기반
+        </div>
+    </div>
+
+    <script>
+        function convertToHaxynStyle(text) {
+            if (!text) return "";
+
+            // Pre-processing: remove spaces occasionally
+            if (text.length < 10 && Math.random() < 0.2) {
+                text = text.replace(/\s/g, "");
+            } else if (Math.random() < 0.1) {
+                text = text.replace(/\s/g, "");
+            }
+
+            let words = text.split(/\s+/);
+            let convertedWords = [];
+
+            // 1. Start with specific starters
+            if (Math.random() < 0.2) {
+                const starters = ['ㅇㄴ', 'ㅅㅂ', '아니', '근데', '왁'];
+                convertedWords.push(starters[Math.floor(Math.random() * starters.length)]);
+            }
+
+            words.forEach((word, index) => {
+                // 2. Base replacements & Intensifiers
+                word = word.replace(/진짜/g, 'ㅈㅉ');
+                word = word.replace(/너무/g, 'ㅈㄴ');
+                word = word.replace(/정말/g, 'ㅈㅉ');
+                word = word.replace(/매우/g, '개');
+                word = word.replace(/엄청/g, '개');
+                word = word.replace(/싫다/g, '실어');
+                word = word.replace(/싫어/g, '실어');
+                word = word.replace(/좋아/g, '조ㅎ아');
+                word = word.replace(/맞아/g, 'ㅇㅈ');
+                word = word.replace(/인정/g, 'ㅇㅈ');
+                word = word.replace(/그러니까/g, 'ㄱㄴㄲ');
+                word = word.replace(/많아/g, '만아');
+                word = word.replace(/뭐지/g, '머지');
+                word = word.replace(/뭐야/g, '머ㅑㅇ');
+                word = word.replace(/새끼들/g, '새키들');
+
+                // 3. Shorthand
+                word = word.replace(/있어/g, '잇서');
+                word = word.replace(/있음/g, '잇슴');
+                word = word.replace(/했어/g, '햇서');
+                word = word.replace(/잖아요/g, '잔아여');
+
+                // 4. Ending variations
+                if (word.endsWith('어')) {
+                    const r = Math.random();
+                    if (r < 0.2) word = word.slice(0, -1) + '더';
+                    else if (r < 0.4) word = word.slice(0, -1) + '어어';
+                    else if (r < 0.5) word = word.slice(0, -1) + 'ㅛㅇ어';
+                    else if (r < 0.6) word = word.slice(0, -1) + '햇슨';
+                } else if (word.endsWith('다')) {
+                    const r = Math.random();
+                    if (r < 0.3) word = word.slice(0, -1) + '타';
+                    else if (r < 0.6) word = word.slice(0, -1) + '어';
+                } else if (word.endsWith('해')) {
+                    const r = Math.random();
+                    if (r < 0.3) word = word.slice(0, -1) + '핸더';
+                    else if (r < 0.6) word = word.slice(0, -1) + '해어';
+                } else if (word.endsWith('요')) {
+                    if (Math.random() < 0.5) word = word.slice(0, -1) + 'ㅛㅇ';
+                }
+
+                // 5. Subtle Typos
+                if (word.length > 2 && Math.random() < 0.08) {
+                    const idx = Math.floor(Math.random() * word.length);
+                    const char = word[idx];
+                    if (char >= '가' && char <= '힣') {
+                        const consonants = ['ㄱ', 'ㄴ', 'ㅇ'];
+                        word = word.slice(0, idx + 1) + consonants[Math.floor(Math.random() * consonants.length)] + word.slice(idx + 1);
+                    }
+                }
+
+                // 6. Specific word replacements
+                if (['응', '어', '어어'].includes(word)) word = '운';
+                else if (word === '아니') word = 'ㅇㄴ';
+
+                // 7. Rare trailing marks
+                if (index === words.length - 1 && Math.random() < 0.15) {
+                    const marks = ['!', '?', 'ㅋㅋㅋㅋ', 'ㅎㅎㅎ'];
+                    word += marks[Math.floor(Math.random() * marks.length)];
+                }
+
+                convertedWords.push(word);
+            });
+
+            // 8. Join logic
+            let result = Math.random() < 0.1 ? convertedWords.join("") : convertedWords.join(" ");
+
+            // 9. Emotional Emojis
+            const rEmo = Math.random();
+            if (rEmo < 0.05) result += "ㅜ".repeat(Math.floor(Math.random() * 3) + 2);
+            else if (rEmo < 0.1) result += "ㅠ".repeat(Math.floor(Math.random() * 3) + 2);
+            else if (rEmo < 0.4) result += " " + "ㅋ".repeat(Math.floor(Math.random() * 8) + 3);
+            else if (rEmo < 0.5) result += " " + "ㅎ".repeat(Math.floor(Math.random() * 4) + 3);
+
+            // 10. Side note # prefix
+            if (Math.random() < 0.1) {
+                result = "# " + result;
+            }
+
+            return result;
+        }
+
+        const inputEl = document.getElementById('input');
+        const outputEl = document.getElementById('output');
+        const convertBtn = document.getElementById('convertBtn');
+        const copyBtn = document.getElementById('copyBtn');
+
+        convertBtn.addEventListener('click', () => {
+            const text = inputEl.value.trim();
+            if (text) {
+                outputEl.textContent = convertToHaxynStyle(text);
+            }
+        });
+
+        copyBtn.addEventListener('click', () => {
+            const text = outputEl.textContent;
+            if (text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = '복사됨!';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                    }, 2000);
+                });
+            }
+        });
+
+        // Enter key to convert
+        inputEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                convertBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
